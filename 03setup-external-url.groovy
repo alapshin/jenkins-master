@@ -1,7 +1,9 @@
 import jenkins.model.*
 
-def env = System.getenv()
-def locationConfig = JenkinsLocationConfiguration.get()
+config = evaluate(new File(Jenkins.instance.getRootDir(), 
+    "init.groovy.d/config.groovy"))
 
-locationConfig.url = env.JENKINS_EXTERNAL_URL
+def locationConfig = 
+    JenkinsLocationConfiguration.get()
+locationConfig.url = config.jenkins.url
 locationConfig.save()

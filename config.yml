@@ -1,0 +1,8 @@
+github:
+  # hookUrl: http://example.com/github-webhook/
+  # hookSharedSecretId: пшерги_shared_secret
+  servers:
+    - name: Public GitHub server
+      apiUrl: https://api.github.com
+      manageHooks: true,
+      credentialsId: github_access_token

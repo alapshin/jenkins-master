@@ -14,104 +14,76 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+import java.util.logging.Logger
 import jenkins.model.*
-import net.sf.json.JSONObject
+import org.yaml.snakeyaml.Yaml
 import org.jenkinsci.plugins.github.GitHubPlugin
 import org.jenkinsci.plugins.github.config.GitHubPluginConfig
 import org.jenkinsci.plugins.github.config.GitHubServerConfig
 import org.jenkinsci.plugins.github.config.HookSecretConfig
 
-
 /*
-   Configure GitHub plugin for GitHub servers and other global Jenkins
-   configuration settings.
-
-    Example configuration
-    github_plugin = [
-        hookUrl: 'http://localhost:8080/github-webhook/',
-        hookSharedSecretId: 'webhook-shared-secret',
-        servers: [
-            [
-                name: 'Public GitHub server'
-                apiUrl: 'https://api.github.com',
-                manageHooks: true,
-                credentialsId: 'github-token',
-            ]
-        ],
-    ]
+   Configure GitHub plugin for GitHub servers
  */
+logger = Logger.getLogger("")
+config = evaluate(new File(Jenkins.instance.getRootDir(), 
+    "init.groovy.d/config.groovy"))
 
-github_plugin = [
-    hookUrl: 'http://localhost:8080/github-webhook/',
-    hookSharedSecretId: 'webhook-shared-secret',
-    servers: [
-        [
-            name: 'Public GitHub server',
-            apiUrl: 'https://api.github.com',
-            manageHooks: true,
-            credentialsId: 'github_access_token',
-        ]
-    ]
-]
-
-List<GitHubServerConfig> configs = []
-
-github_plugin['servers'].each { config ->
-    println config
-    def name = config['name']
-    if (name && config) {
-        def server = new GitHubServerConfig(config['credentialsId'])
-        server.name = name
-        server.apiUrl = config.get('apiUrl', 'https://api.github.com')
-        server.manageHooks = config.get('manageHooks', false)
-        server.clientCacheSize = 20
-        configs << server
-    }
+if (!config.github) {
+    logger.info('Nothing changed. GitHub plugin settings not found found.')
+    return
 }
 
-def pluginSettings = GitHubPlugin.configuration()
+List<GitHubServerConfig> configs = 
+    config.github['servers'].collect { server ->
+        return new GitHubServerConfig(server['credentialsId']).with {
+            name = server['name']
+            apiUrl = server.get('apiUrl', 'https://api.github.com')
+            manageHooks = server.get('manageHooks', false)
+            clientCacheSize = 20
 
-def overrideHookEqual = isOverrideHookEqual(pluginSettings, github_plugin)
-def serverConfigsEqual = isServerConfigsEqual(pluginSettings.configs, configs)
-def pluginSettingsEqual = isPluginSettingsEqual(pluginSettings, github_plugin) 
-def hookSecretConfigEqual = pluginSettings.hookSecretConfig.credentialsId ==
-    github_plugin['hookSharedSecretId']
-
-println "overrideHookEqual ${overrideHookEqual}"
-println "serverConfigsEqual ${serverConfigsEqual}"
-println "pluginSettingsEqual ${pluginSettingsEqual}"
-println "hookSecretConfigEqual ${hookSecretConfigEqual}"
-
-if (github_plugin && (!pluginSettingsEqual || !serverConfigsEqual)) {
-    println "Github2"
-    if (pluginSettings.hookSecretConfig && !hookSecretConfigEqual) {
-        println "Github3"
-        pluginSettings.hookSecretConfig = new HookSecretConfig(
-            github_plugin.optString('hookSharedSecretId'))
-    }
-    println "Github4"
-    if (!overrideHookEqual) {
-        println "Github5"
-        if (pluginSettings.isOverrideHookURL() && !github_plugin['overrideHookUrl']) {
-            println "Github6"
-            pluginSettings.hookUrl = null
-        } else if (pluginSettings.@hookUrl != new URL(github_plugin['overrideHookUrl'])) {
-            println "Github7"
-            pluginSettings.hookUrl = new URL(github_plugin['overrideHookUrl'])
+            return it
         }
     }
-    println "Github8"
+
+def pluginSettings = GitHubPlugin.configuration()
+def incomingSettings = new GitHubPluginConfig(configs).with {
+    if (config.github['hookUrl']) {
+        hookUrl = new URL(config.github['hookUrl'])
+            overrideHookUrl = true
+    }
+    hookSecretConfig = new HookSecretConfig(config.github['hookSharedSecretId'])
+    return it
+}
+
+def overrideHookEqual = isOverrideHookEqual(pluginSettings, incomingSettings)
+
+def serverConfigsEqual = isServerConfigsEqual(pluginSettings.configs, 
+    incomingSettings.configs)
+def pluginSettingsEqual = isPluginSettingsEqual(pluginSettings, incomingSettings) 
+
+def hookSecretConfigEqual = pluginSettings.hookSecretConfig.credentialsId ==
+    incomingSettings.hookSecretConfig.credentialsId
+
+if (pluginSettingsEqual && serverConfigsEqual) {
+    logger.info('Nothing changed. GitHub plugin already configured.')
+} else {
+    // Update hook shared secret if it is changed
+    if (pluginSettings.hookSecretConfig && !hookSecretConfigEqual) {
+        pluginSettings.hookSecretConfig = incomingSettings.hookSecretConfig
+    }
+    if (!overrideHookEqual) {
+        if (pluginSettings.isOverrideHookURL() && !incommingSettings.isOverrideHookURL()) {
+            pluginSettings.hookUrl = null
+        } else if (pluginSettings.hookUrl != incomingSettings.hookUrl) {
+            pluginSettings.hookUrl = incomingSettings.hookUrl
+        }
+    }
     if (!serverConfigsEqual) {
         pluginSettings.configs = configs
     }
     pluginSettings.save()
-    println 'Configured GitHub plugin.'
-} else {
-    if (github_plugin) {
-        println 'Nothing changed. GitHub plugin already configured.'
-    } else {
-        println 'Nothing changed. Skipped configuring GitHub plugin because settings are empty.'
-    }
+    logger.info('Configured GitHub plugin.')
 }
 
 private boolean isServerConfigsEqual(List<GitHubServerConfig> s1, List<GitHubServerConfig> s2) {
@@ -125,22 +97,22 @@ private boolean isServerConfigsEqual(List<GitHubServerConfig> s1, List<GitHubSer
         }
 }
 
-private boolean isOverrideHookEqual(GitHubPluginConfig settings, Map config) {
+private boolean isOverrideHookEqual(GitHubPluginConfig settings, GitHubPluginConfig config) {
     (
         (
+            config.isOverrideHookURL() &&
             settings.isOverrideHookURL() &&
-            config['overrideHookUrl'] && 
-                settings.hookUrl == new URL(config['overrideHookUrl'])
+            settings.hookUrl == config.hookUrl
         ) ||
         (
-            !settings.isOverrideHookURL() && !config['overrideHookUrl']
+            !settings.isOverrideHookURL() && !config.isOverrideHookURL()
         )
     )
 }
 
-private boolean isPluginSettingsEqual(GitHubPluginConfig settings, Map config) {
+private boolean isPluginSettingsEqual(GitHubPluginConfig settings, GitHubPluginConfig config) {
     settings.hookSecretConfig &&
-        settings.hookSecretConfig.credentialsId == config['hookSharedSecretId'] &&
+        settings.hookSecretConfig.credentialsId == config.hookSecretConfig.credentialsId &&
             isOverrideHookEqual(settings, config)
 }
 

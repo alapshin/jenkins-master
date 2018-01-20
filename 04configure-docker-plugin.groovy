@@ -28,10 +28,9 @@ import com.nirima.jenkins.plugins.docker.DockerCloud
 import com.nirima.jenkins.plugins.docker.DockerImagePullStrategy
 import com.nirima.jenkins.plugins.docker.DockerTemplate
 import com.nirima.jenkins.plugins.docker.DockerTemplateBase
-import com.nirima.jenkins.plugins.docker.launcher.DockerComputerLauncher
-import com.nirima.jenkins.plugins.docker.launcher.DockerComputerJNLPLauncher
 import com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy
-import io.jenkins.docker.connector.DockerComputerJNLPConnector
+import io.jenkins.docker.connector.DockerComputerConnector
+import io.jenkins.docker.connector.DockerComputerAttachConnector
 
 /*
    Configure Credentials for docker cloud stack in Jenkins.
@@ -127,11 +126,10 @@ class Factory {
                 obj['mac_address'],
                 obj.get('extra_host', '')
         )
-        // For now the launcher_method will always be "jnlp"
-        JNLPLauncher launcher = new JNLPLauncher(true)
-        DockerComputerJNLPConnector connector = 
-            new DockerComputerJNLPConnector(launcher)
-        connector.setUser(obj["connector"]["user"])
+        // For now the launcher_method will always be "attached"
+        DockerComputerConnector connector = 
+            new DockerComputerAttachConnector()
+        connector.user = obj["connector"]["user"]
         // This availability_strategy is for "run_once".  We can customize it later
         RetentionStrategy retentionStrategy = new DockerOnceRetentionStrategy(
             obj.get('availability_idle_timeout', 10))

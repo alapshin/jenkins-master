@@ -13,6 +13,7 @@ junit
 matrix-auth
 pipeline-github-lib
 pipeline-stage-view
+role-strategy
 simple-theme-plugin
 slack
 warnings

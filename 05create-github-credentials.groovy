@@ -34,7 +34,7 @@ if (!propFile.exists()) {
     ])
     credentialsUtils.addUsernamePasswordCredentials([
         'credentials_id': 'github_account_with_token',
-        'user': properties['user'],
+        'user': properties['username'],
         'password': properties['token'],
         'description': 'GitHub account with access token'
     ])

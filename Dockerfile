@@ -1,6 +1,6 @@
 # Preconfigured Jenkins image
 
-FROM jenkins/jenkins:slim
+FROM jenkins/jenkins:lts-slim
 
 USER root
 RUN apt-get update && apt-get install gosu

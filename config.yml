@@ -19,8 +19,8 @@ jenkins:
         read_timeout: 15
         connection_timeout: 5
         templates:
-          - labels: "android"
-            image: "alapshin/android-build-env:latest"
+          - labels: "android-agent"
+            image: "alapshin/jenkins-android-agent:latest"
             executors: 1
             instance_cap: ""
             remote_fs: "/home/jenkins"

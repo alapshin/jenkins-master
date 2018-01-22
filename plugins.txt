@@ -11,6 +11,7 @@ github-branch-source
 htmlpublisher
 junit
 matrix-auth
+pipeline-aws
 pipeline-github-lib
 pipeline-stage-view
 role-strategy

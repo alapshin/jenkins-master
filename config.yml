@@ -25,7 +25,7 @@ jenkins:
             instance_cap: ""
             remote_fs: "/home/jenkins"
             # valid values: exclusive or normal
-            usage: "normal"
+            usage: "exclusive"
             # valid values: pull_latest, pull_always, pull_never
             remove_volumes: false,
             image_pull_strategy: "pull_latest"

@@ -16,7 +16,6 @@
  */
 import java.util.logging.Logger
 import jenkins.model.*
-import org.yaml.snakeyaml.Yaml
 import org.jenkinsci.plugins.github.GitHubPlugin
 import org.jenkinsci.plugins.github.config.GitHubPluginConfig
 import org.jenkinsci.plugins.github.config.GitHubServerConfig

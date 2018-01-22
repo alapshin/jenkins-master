@@ -50,3 +50,13 @@ jenkins:
             availability_idle_timeout: 5
             connector: 
               user: "jenkins"
+libraries:
+  - name: "awesome-lib"
+    implicit: false
+    defaultVersion: 'master'
+    includeInChangesets: true
+    allowVersionOverride: true
+    retriever:
+        scm:
+          git:
+            remote: "https://github.com/jenkins-infra/pipeline-library.git"

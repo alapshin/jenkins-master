@@ -49,9 +49,9 @@ config.libraries.each { config ->
     }
     def retriever = new SCMSourceRetriever(scm)
     libraries << new LibraryConfiguration(config.name, retriever).with {
-        implicit = false//config.get('implicit', false)
+        implicit = config.get('implicit', false)
         defaultVersion = config['defaultVersion']
-        includeInChangesets = config.get('includeInChangesets', true)
+        includeInChangesets = config.get('includeInChangesets', false)
         allowVersionOverride = config.get('allowVersionOverride', true)
         return it
     }

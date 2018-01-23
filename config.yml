@@ -51,7 +51,7 @@ jenkins:
             connector: 
               user: "jenkins"
 libraries:
-  - name: "awesome-lib"
+  - name: "util-lib"
     implicit: false
     defaultVersion: 'master'
     includeInChangesets: true
@@ -59,4 +59,4 @@ libraries:
     retriever:
         scm:
           git:
-            remote: "https://github.com/jenkins-infra/pipeline-library.git"
+            remote: "https://github.com/alapshin/jenkins-pipeline-shared-lib.git"

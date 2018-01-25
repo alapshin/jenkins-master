@@ -13,7 +13,7 @@ ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 COPY *.xml /usr/share/jenkins/ref/
 
 # Copy configuration scripts
-COPY *.groovy /usr/share/jenkins/ref/init.groovy.d/
+COPY init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
 
 # Pre-install plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt

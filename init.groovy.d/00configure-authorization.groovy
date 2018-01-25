@@ -33,9 +33,6 @@ strategy.doAddRole(RoleBasedAuthorizationStrategy.GLOBAL, adminRole,
 strategy.doAddRole(RoleBasedAuthorizationStrategy.GLOBAL, authenticatedRole,
     authenticatedPermissions.join(","), "true", null)
 
-// Create bot user
-realm.createAccount('bot', 'beepboopbop')
-
 // Create admin user
 Properties properties = new Properties()
 new File('/var/run/secrets/admin_credentials.properties').withInputStream {

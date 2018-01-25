@@ -33,7 +33,7 @@ jenkins:
             dns: ""
             hostname: ""
             docker_command: ""
-            volumes: "android_sdk:/opt/android-sdk\njenkins_agent_home:/home/jenkins"
+            volumes: "android_sdk:/opt/android-sdk\njenkins_agent_home:/home/jenkins\njenkins_agent_cache:/home/jenkins/.jenkins"
             volumes_from: ""
             environment: ""
             # cpu_shares: 0,

@@ -140,24 +140,16 @@ class CredentialsUtils {
         SystemCredentialsProvider systemCredentials = 
             SystemCredentialsProvider.instance
         Map systemCredentialsMap = systemCredentials.getDomainCredentialsMap()
-        // Add credentilas only if global credentials list is empty 
-        // or doesn't contains credentials with specified id
-        if (!systemCredentialsMap[domain] 
-            || !systemCredentialsMap[domain].any { credentialsId.equals(it.id) }) {
-            // Check if list of global credentials exists and not empty
-            // This conditions uses http://groovy-lang.org/semantics.html#Groovy-Truth
-            if (systemCredentialsMap[domain]) {
-                // Other credentials exist so we should only append new credentials
-                systemCredentialsMap[domain] << credential
-            } else {
-                systemCredentialsMap[domain] = [credential]
-            }
-            systemCredentials.setDomainCredentialsMap(
-                    systemCredentialsMap)
-            systemCredentials.save()
-            logger.info("${credentialsId} credentials added to Jenkins.")
+        // Check if list of global credentials exists and not empty
+        if (systemCredentialsMap[domain]) {
+            // Other credentials exist so we should only append new credentials
+            systemCredentialsMap[domain] << credential
         } else {
-            logger.info("Nothing changed. ${credentialsId} credentials already exist.")
+            systemCredentialsMap[domain] = [credential]
         }
+        systemCredentials.setDomainCredentialsMap(
+                systemCredentialsMap)
+        systemCredentials.save()
+        logger.info("${credentialsId} credentials added to Jenkins.")
     }
 }

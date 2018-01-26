@@ -1,7 +1,6 @@
-import hudson.*
-import hudson.model.*
+package main.groovy.com.alapshin.jenkins.init
+
 import hudson.security.*
-import jenkins.*
 import jenkins.model.*
 import java.util.logging.Logger
 import com.michelin.cio.hudson.plugins.rolestrategy.*

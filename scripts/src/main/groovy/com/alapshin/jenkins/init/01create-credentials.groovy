@@ -1,5 +1,6 @@
+package main.groovy.com.alapshin.jenkins.init
+
 import jenkins.model.*
-import hudson.security.*
 import org.yaml.snakeyaml.Yaml
 import java.util.logging.Logger
 

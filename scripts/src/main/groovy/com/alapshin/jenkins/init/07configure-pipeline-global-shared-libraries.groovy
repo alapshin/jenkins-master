@@ -1,3 +1,4 @@
+package main.groovy.com.alapshin.jenkins.init
 /*
    Copyright 2015-2017 Sam Gleske 
    https://github.com/samrocketman/jenkins-bootstrap-jervis
@@ -16,6 +17,9 @@
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+import org.yaml.snakeyaml.Yaml
+
 import java.util.logging.Logger
 import jenkins.model.*
 import jenkins.plugins.git.GitSCMSource
@@ -31,8 +35,9 @@ import org.jenkinsci.plugins.workflow.libs.SCMSourceRetriever
  */
 
 logger = Logger.getLogger("")
-config = evaluate(new File(Jenkins.instance.getRootDir(), 
-    "init.groovy.d/config.groovy"))
+config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
+    return new Yaml().load(it)
+}
 
 if (!config.libraries) {
     logger.info('Nothing changed. No global libraries settings are found.')

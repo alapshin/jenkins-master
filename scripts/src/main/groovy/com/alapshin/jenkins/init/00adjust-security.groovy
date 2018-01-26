@@ -1,3 +1,7 @@
+package main.groovy.com.alapshin.jenkins.init
+
+import hudson.security.csrf.DefaultCrumbIssuer
+
 // By default Jenkins 2.0 comes with Setup Wizard that is responsible for
 // plugin installation and security configuration during first launch after 
 // install.
@@ -10,10 +14,9 @@
 // `SetupWizard#init(boolean)` at
 // https://github.com/jenkinsci/jenkins/blob/master/core/src/main/java/jenkins/install/SetupWizard.java
 
-import hudson.*;
-import hudson.model.*;
 import jenkins.*;
-import jenkins.model.*;
+import jenkins.model.*
+import jenkins.security.s2m.AdminWhitelistRule;
 
 def instance = Jenkins.instance
 
@@ -26,11 +29,11 @@ instance.agentProtocols = ['JNLP4-connect', 'Ping']
 
 // Enable slave-master access control.
 // Reference: <https://wiki.jenkins.io/display/JENKINS/Slave+To+Master+Access+Control>
-instance.injector.getInstance(jenkins.security.s2m.AdminWhitelistRule.class)
+instance.injector.getInstance(AdminWhitelistRule.class)
         .masterKillSwitch = false;
 
 // Enable CSRF.
 // Reference: <https://wiki.jenkins.io/display/JENKINS/CSRF+Protection>
-instance.crumbIssuer = new hudson.security.csrf.DefaultCrumbIssuer(true)
+instance.crumbIssuer = new DefaultCrumbIssuer(true)
 
 instance.save()

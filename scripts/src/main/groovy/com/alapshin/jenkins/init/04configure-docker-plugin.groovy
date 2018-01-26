@@ -1,3 +1,4 @@
+package main.groovy.com.alapshin.jenkins.init
 /*
    Copyright (c) 2015-2017 Sam Gleske
    https://github.com/samrocketman/jenkins-bootstrap-shared
@@ -17,11 +18,12 @@
    limitations under the License.
  */
 
+
+import org.yaml.snakeyaml.Yaml
+
 import java.util.logging.Logger
-import hudson.*;
-import hudson.model.*;
-import hudson.slaves.*;
-import jenkins.*;
+
+import hudson.slaves.*
 import jenkins.model.*;
 
 import com.nirima.jenkins.plugins.docker.DockerCloud
@@ -39,8 +41,10 @@ import io.jenkins.docker.connector.DockerComputerAttachConnector
  */
 
 logger = Logger.getLogger("")
-config = evaluate(new File(Jenkins.instance.getRootDir(), 
-    "init.groovy.d/config.groovy"))
+
+config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
+    return new Yaml().load(it)
+}
 
 if (!Jenkins.instance.isQuietingDown()) {
     ArrayList<DockerCloud> clouds = 
@@ -89,7 +93,7 @@ class Factory {
         return dockerArray
     }
 
-    // Factory method to create a new instance of the DockerCloud class from a map
+    // main.groovy.com.alapshin.jenkins.init.Factory method to create a new instance of the DockerCloud class from a map
     def static newDockerCloud(Map obj) {
         new DockerCloud(
                 obj['name'],
@@ -104,7 +108,7 @@ class Factory {
                 )
     }
 
-    // Factory method to create a new instance of the DockerTemplate class from a map
+    // main.groovy.com.alapshin.jenkins.init.Factory method to create a new instance of the DockerTemplate class from a map
     def static newDockerTemplate(Map obj) {
         DockerTemplateBase dockerTemplateBase = new DockerTemplateBase(
                 obj['image'],

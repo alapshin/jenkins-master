@@ -1,3 +1,6 @@
+theme:
+  css: "https://jenkins-contrib-themes.github.io/jenkins-neo-theme/dist/neo-light.css"
+
 github:
   # hookUrl: http://example.com/github-webhook/
   # hookSharedSecretId: пшерги_shared_secret
@@ -6,6 +9,17 @@ github:
       apiUrl: https://api.github.com
       manageHooks: true,
       credentialsId: github_access_token
+
+libraries:
+  - name: "util-lib"
+    implicit: false
+    defaultVersion: 'master'
+    includeInChangesets: true
+    allowVersionOverride: true
+    retriever:
+        scm:
+          git:
+            remote: "https://github.com/alapshin/jenkins-pipeline-shared-lib.git"
 
 jenkins:
   url: https://example.com
@@ -50,13 +64,4 @@ jenkins:
             availability_idle_timeout: 5
             connector: 
               user: "jenkins"
-libraries:
-  - name: "util-lib"
-    implicit: false
-    defaultVersion: 'master'
-    includeInChangesets: true
-    allowVersionOverride: true
-    retriever:
-        scm:
-          git:
-            remote: "https://github.com/alapshin/jenkins-pipeline-shared-lib.git"
+

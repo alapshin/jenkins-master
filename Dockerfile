@@ -9,9 +9,6 @@ COPY entrypoint.sh /
 # Skip initial setup
 ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
 
-# Copy configuration files
-COPY *.xml /usr/share/jenkins/ref/
-
 # Copy configuration scripts
 COPY init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
 

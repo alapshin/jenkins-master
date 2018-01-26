@@ -1,13 +1,10 @@
 package main.groovy.com.alapshin.jenkins.init
 
 import jenkins.model.*
-import org.yaml.snakeyaml.Yaml
 
-config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
-    return new Yaml().load(it)
-}
+def env = System.getenv()
 
-def locationConfig = 
+def locationConfig =
     JenkinsLocationConfiguration.get()
-locationConfig.url = config.jenkins.url
+locationConfig.url = String.format("https://%s", env.JENKINS_HOST)
 locationConfig.save()

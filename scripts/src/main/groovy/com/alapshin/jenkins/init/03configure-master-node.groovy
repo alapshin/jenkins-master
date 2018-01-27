@@ -4,7 +4,6 @@ import hudson.model.Node
 import jenkins.model.Jenkins
 import org.yaml.snakeyaml.Yaml
 
-
 config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
     return new Yaml().load(it)
 }

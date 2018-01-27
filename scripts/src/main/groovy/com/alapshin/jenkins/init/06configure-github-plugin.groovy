@@ -1,6 +1,5 @@
-package com.alapshin.jenkins.init
 /*
-   Copyright 2015-2017 Sam Gleske 
+   Copyright 2015-2017 Sam Gleske
    https://github.com/samrocketman/jenkins-bootstrap-jervis
 
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -15,6 +14,8 @@ package com.alapshin.jenkins.init
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+package com.alapshin.jenkins.init
 
 import org.yaml.snakeyaml.Yaml
 

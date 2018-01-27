@@ -1,10 +1,8 @@
-package com.alapshin.jenkins.init.utils
-
 /*
-   Copyright (c) 2015-2017 Sam Gleske 
+   Copyright (c) 2015-2017 Sam Gleske
    https://github.com/samrocketman/jenkins-bootstrap-shared
-   Modifications to allow to reuse this class as util class
-   instead of script by Andrei Lapshin
+
+   Modifications to allow to this class reuse  as util one by Andrei Lapshin
 
    Licensed under the Apache License, Version 2.0 (the "License");
    you may not use this file except in compliance with the License.
@@ -18,6 +16,8 @@ package com.alapshin.jenkins.init.utils
    See the License for the specific language governing permissions and
    limitations under the License.
  */
+
+package com.alapshin.jenkins.init.utils
 
 import java.util.logging.Logger
 import hudson.util.Secret

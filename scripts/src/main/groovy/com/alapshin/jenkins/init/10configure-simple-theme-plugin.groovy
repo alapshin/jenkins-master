@@ -12,16 +12,16 @@ config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
     return new Yaml().load(it)
 }
 
-if (!config.theme) {
+if (!config.jenkins.theme) {
     logger.info('Nothing changed. No theme settings are found.')
     return
 }
 
 for (pd in PageDecorator.all()) {
     if (pd instanceof SimpleThemeDecorator) {
-        pd.cssUrl = config.theme.css
+        pd.cssUrl = config.jenkins.theme.css
         pd.save()
-        logger.info("Setting theme settings " + config.theme)
+        logger.info("Setting theme settings " + config.jenkins.theme)
     }
 }
 

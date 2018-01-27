@@ -1,4 +1,4 @@
-package main.groovy.com.alapshin.jenkins.init
+package com.alapshin.jenkins.init
 
 import hudson.model.PageDecorator
 import jenkins.model.Jenkins

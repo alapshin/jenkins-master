@@ -1,3 +1,5 @@
+package com.alapshin.jenkins.init.utils
+
 /*
    Copyright (c) 2015-2017 Sam Gleske 
    https://github.com/samrocketman/jenkins-bootstrap-shared

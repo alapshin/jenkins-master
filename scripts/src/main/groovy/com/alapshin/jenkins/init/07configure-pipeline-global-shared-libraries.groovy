@@ -1,4 +1,4 @@
-package main.groovy.com.alapshin.jenkins.init
+package com.alapshin.jenkins.init
 /*
    Copyright 2015-2017 Sam Gleske 
    https://github.com/samrocketman/jenkins-bootstrap-jervis

@@ -1,12 +1,12 @@
 plugins {
     id "groovy"
     id "com.github.ben-manes.versions" version "0.17.0"
-    id "com.mkobit.jenkins.pipelines.shared-library" version "0.4.0"
 }
 
 repositories {
     jcenter()
-    maven { url "https://repo.jenkins-ci.org" }
+    maven { url "https://repo.jenkins-ci.org/public" }
+    maven { url "https://repo.jenkins-ci.org/releases" }
 }
 
 sourceCompatibility = 1.8

@@ -45,20 +45,21 @@ config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
     return new Yaml().load(it)
 }
 
+if (!config.jenkins.clouds.docker) {
+    logger.info("Nothing changed. No Docker clouds to configure.")
+    return
+}
+
 if (!Jenkins.instance.isQuietingDown()) {
     logger.info("Start configuring Docker clouds")
     clouds = Factory.bindObjectToList(DockerCloud.class, config.jenkins.clouds.docker)
-    if (clouds.size() > 0) {
-        clouds.each { cloud ->
-            if (Jenkins.instance.getCloud(cloud.name) == null) {
-                Jenkins.instance.clouds.add(cloud)
-                logger.info("Configured Docker cloud ${cloud.name}")
-            }
-        }
-        Jenkins.instance.save()
-    } else {
-        logger.info("Nothing changed. No docker clouds to configure.")
+    clouds.each { cloud ->
+        // If cloud if such name is present then override it
+        Jenkins.instance.clouds.removeAll { it.name == cloud.name }
+        Jenkins.instance.clouds.add(cloud)
+        logger.info("Configured Docker cloud ${cloud.name}")
     }
+    Jenkins.instance.save()
 } else {
     logger.info("Shutdown mode enabled. Configure Docker clouds SKIPPED.")
 }

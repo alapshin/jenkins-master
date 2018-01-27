@@ -1,4 +1,5 @@
 package com.alapshin.jenkins.init
+
 /*
    Copyright (c) 2015-2017 Sam Gleske
    https://github.com/samrocketman/jenkins-bootstrap-shared
@@ -22,16 +23,15 @@ package com.alapshin.jenkins.init
 import org.yaml.snakeyaml.Yaml
 import java.util.logging.Logger
 
-import jenkins.model.*;
-import hudson.model.Node
-
+import jenkins.model.*
 import com.nirima.jenkins.plugins.docker.DockerCloud
-import com.nirima.jenkins.plugins.docker.DockerImagePullStrategy
-import com.nirima.jenkins.plugins.docker.DockerTemplate
-import com.nirima.jenkins.plugins.docker.DockerTemplateBase
-import com.nirima.jenkins.plugins.docker.strategy.DockerOnceRetentionStrategy
-import io.jenkins.docker.connector.DockerComputerConnector
-import io.jenkins.docker.connector.DockerComputerAttachConnector
+
+// Import local util class
+File classFile = new File(Jenkins.instance.getRootDir(),
+        "init.groovy.d/utils/DockerCloudFactory.groovy")
+Class utilClass = new GroovyClassLoader(this.class.classLoader)
+        .parseClass(classFile);
+GroovyObject dockerCloudFactory = (GroovyObject) utilClass.newInstance();
 
 /*
    Configure Credentials for docker cloud stack in Jenkins.
@@ -52,7 +52,7 @@ if (!config.jenkins.clouds.docker) {
 
 if (!Jenkins.instance.isQuietingDown()) {
     logger.info("Start configuring Docker clouds")
-    clouds = Factory.bindObjectToList(DockerCloud.class, config.jenkins.clouds.docker)
+    clouds = dockerCloudFactory.bindObjectToList(DockerCloud.class, config.jenkins.clouds.docker)
     clouds.each { cloud ->
         // If cloud if such name is present then override it
         Jenkins.instance.clouds.removeAll { it.name == cloud.name }
@@ -64,87 +64,3 @@ if (!Jenkins.instance.isQuietingDown()) {
     logger.info("Shutdown mode enabled. Configure Docker clouds SKIPPED.")
 }
 
-class Factory {
-    def static bindObjectToList(Class type, Object src) {
-        if (!(type == DockerCloud) && !(type == DockerTemplate)) {
-            throw new Exception("Must use DockerCloud or DockerTemplate class.")
-        }
-        // dockerArray should be a DockerCloud or DockerTemplate
-        ArrayList<?> dockerArray
-        if (type == DockerCloud){
-            dockerArray = new ArrayList<DockerCloud>()
-        } else {
-            dockerArray = new ArrayList<DockerTemplate>()
-        }
-        // Cast the configuration object to a Docker instance which Jenkins will use in configuration
-        if (src instanceof Map) {
-            // Uses string interpallation to call a method
-            // e.g instead of newDockerCloud(src) we use instead...
-            dockerArray.add("new${type.getSimpleName()}"(src))
-        } else if (src instanceof List) {
-            for (Object o : src) {
-                if (o instanceof Map) {
-                    dockerArray.add("new${type.getSimpleName()}"(o))
-                }
-            }
-        }
-        return dockerArray
-    }
-
-    // main.groovy.com.alapshin.jenkins.init.Factory method to create a new instance of the DockerCloud class from a map
-    def static newDockerCloud(Map obj) {
-        new DockerCloud(
-                obj['name'],
-                bindObjectToList(DockerTemplate.class, obj['templates']),
-                obj.host.uri,
-                obj.get('container_cap', 100),
-                obj['connection_timeout'],
-                obj['read_timeout'],
-                obj['credentials_id'],
-                obj['version'],
-                obj["docker_hostname"]
-                )
-    }
-
-    // main.groovy.com.alapshin.jenkins.init.Factory method to create a new instance of the DockerTemplate class from a map
-    def static newDockerTemplate(Map obj) {
-        DockerTemplateBase dockerTemplateBase = new DockerTemplateBase(
-                obj['image'],
-                obj['pull_credentials_id'],
-                obj['dns'],
-                obj["network"],
-                obj['docker_command'],
-                obj['volumes'],
-                obj['volumes_from'],
-                obj['environment'],
-                obj['hostname'],
-                obj.get('memory_limit', null),
-                obj.get('memory_swap_limit', null),
-                obj.get('cpu_shares', null),
-                obj['port_bindings'],
-                obj.get('bind_all_ports', false),
-                obj.get('privileged', false),
-                obj.get('allocate_pseudo_tty', false),
-                obj['mac_address'],
-                obj.get('extra_host', '')
-        )
-        // For now the launcher_method will always be "attached"
-        DockerComputerConnector connector = 
-            new DockerComputerAttachConnector()
-        connector.user = obj["connector"]["user"]
-        def dockerTemplate = new DockerTemplate(
-                dockerTemplateBase,
-                connector,
-                obj['labels'],
-                obj['remote_fs', '/home/jenkins'],
-                obj.get('instance_cap', '1')
-        ).with {
-            mode = Node.Mode."${obj.get('usage', 'EXCLUSIVE')}"
-            pullStrategy = DockerImagePullStrategy."${obj.get('image_pull_strategy', 'PULL_ALWAYS')}"
-            retentionStrategy = new DockerOnceRetentionStrategy(obj.get('availability_idle_timeout', 10))
-            return it
-        }
-
-        return dockerTemplate
-    }
-}

@@ -20,11 +20,10 @@ package main.groovy.com.alapshin.jenkins.init
 
 
 import org.yaml.snakeyaml.Yaml
-
 import java.util.logging.Logger
 
-import hudson.slaves.*
 import jenkins.model.*;
+import hudson.model.Node
 
 import com.nirima.jenkins.plugins.docker.DockerCloud
 import com.nirima.jenkins.plugins.docker.DockerImagePullStrategy
@@ -47,8 +46,6 @@ config = new File(Jenkins.instance.getRootDir(), "config.yml").withInputStream {
 }
 
 if (!Jenkins.instance.isQuietingDown()) {
-    ArrayList<DockerCloud> clouds = 
-        new ArrayList<DockerCloud>()
     logger.info("Start configuring Docker clouds")
     clouds = Factory.bindObjectToList(DockerCloud.class, config.jenkins.clouds.docker)
     if (clouds.size() > 0) {
@@ -134,29 +131,18 @@ class Factory {
         DockerComputerConnector connector = 
             new DockerComputerAttachConnector()
         connector.user = obj["connector"]["user"]
-        // This availability_strategy is for "run_once".  We can customize it later
-        RetentionStrategy retentionStrategy = new DockerOnceRetentionStrategy(
-            obj.get('availability_idle_timeout', 10))
-        String node_usage = (obj.get('usage', 'NORMAL')
-            .toUpperCase().equals('EXCLUSIVE'))? 'EXCLUSIVE' : 'NORMAL'
-        DockerImagePullStrategy pullStrategy
-        switch (obj.get('image_pull_strategy', 'PULL_LATEST').toUpperCase()) {
-            case 'PULL_ALWAYS':
-                pullStrategy = DockerImagePullStrategy.PULL_ALWAYS
-                break
-            case 'PULL_NEVER':
-                pullStrategy = DockerImagePullStrategy.PULL_NEVER
-                break
-            default:
-                pullStrategy = DockerImagePullStrategy.PULL_LATEST
-        }
         def dockerTemplate = new DockerTemplate(
                 dockerTemplateBase,
                 connector,
                 obj['labels'],
                 obj['remote_fs', '/home/jenkins'],
                 obj.get('instance_cap', '1')
-        )
+        ).with {
+            mode = Node.Mode."${obj.get('usage', 'EXCLUSIVE')}"
+            pullStrategy = DockerImagePullStrategy."${obj.get('image_pull_strategy', 'PULL_ALWAYS')}"
+            retentionStrategy = new DockerOnceRetentionStrategy(obj.get('availability_idle_timeout', 10))
+            return it
+        }
 
         return dockerTemplate
     }

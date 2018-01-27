@@ -14,9 +14,7 @@ Class utilClass = new GroovyClassLoader(this.class.classLoader)
 GroovyObject dockerCloudFactory = (GroovyObject) utilClass.newInstance();
 
 /*
-   Configure Credentials for docker cloud stack in Jenkins.
-   Automatically configure the docker cloud stack in Jenkins.
-   Docker plugin v1.1.2
+   Configure Docker cloud plugin
  */
 
 logger = Logger.getLogger("")

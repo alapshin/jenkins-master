@@ -27,7 +27,7 @@ import org.jenkinsci.plugins.github.config.GitHubServerConfig
 import org.jenkinsci.plugins.github.config.HookSecretConfig
 
 /*
-   Configure GitHub plugin for GitHub servers
+   Configure GitHub plugin for public GitHub server
  */
 logger = Logger.getLogger("")
 

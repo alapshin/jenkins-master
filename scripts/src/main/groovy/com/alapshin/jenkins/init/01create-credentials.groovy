@@ -19,13 +19,13 @@ credentials = new File("/var/run/secrets/credentials.yml").withInputStream {
 
 // Iterate over all credentials and create them
 for (cred in credentials) {
-    if (cred.type == "secret_text") {
+    if (cred.type == "STRING") {
         credentialsUtils.addStringCredentials([
             'credentials_id': cred.id,
             'secret': cred.secret, 
             'description': cred.description
         ])
-    } else if (cred.type == "username_password") {
+    } else if (cred.type == "USERNAME_PASSWORD") {
         credentialsUtils.addUsernamePasswordCredentials([
             'credentials_id': cred.id,
             'user': cred.username,

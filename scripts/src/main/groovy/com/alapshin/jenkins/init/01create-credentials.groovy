@@ -5,11 +5,10 @@ import org.yaml.snakeyaml.Yaml
 import java.util.logging.Logger
 
 // Import local util class
-// For some reason evaluate doesn't work
-File utilFile = new File(Jenkins.instance.getRootDir(), 
+File classFile = new File(Jenkins.instance.getRootDir(),
             "init.groovy.d/utils/CredentialsUtils.groovy")
-Class utilClass = new GroovyClassLoader(getClass().getClassLoader())
-    .parseClass(utilFile);
+Class utilClass = new GroovyClassLoader(this.class.classLoader)
+    .parseClass(classFile);
 GroovyObject credentialsUtils = (GroovyObject) utilClass.newInstance();
 
 logger = Logger.getLogger("")

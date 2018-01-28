@@ -6,4 +6,4 @@ if [ -S ${DOCKER_SOCKET} ]; then
         && usermod --append --groups ${DOCKER_GROUP} ${JENKINS_USER}
 fi
 
-exec gosu ${JENKINS_USER} bash -c /usr/local/bin/jenkins.sh
+exec gosu ${JENKINS_USER} /usr/local/bin/jenkins.sh

@@ -1,13 +1,14 @@
 # Preconfigured Jenkins image
 
-FROM jenkins/jenkins:lts-slim
+FROM jenkins/jenkins:lts
 
 USER root
-RUN apt-get update && apt-get install gosu
+RUN apt-get update \
+    && apt-get  --no-install-recommends --yes install gosu
 COPY entrypoint.sh /
 
 # Skip initial setup
-ENV JAVA_OPTS -Djenkins.install.runSetupWizard=false
+ENV JAVA_OPTS "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
 
 # Copy configuration scripts
 COPY init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/

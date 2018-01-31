@@ -14,6 +14,7 @@ matrix-auth
 pipeline-aws
 pipeline-github-lib
 pipeline-stage-view
+rich-text-publisher-plugin
 role-strategy
 simple-theme-plugin
 slack

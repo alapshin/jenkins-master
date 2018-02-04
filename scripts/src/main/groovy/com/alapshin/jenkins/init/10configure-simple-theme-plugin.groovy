@@ -19,6 +19,7 @@ if (!config.jenkins.theme) {
 
 for (pd in PageDecorator.all()) {
     if (pd instanceof SimpleThemeDecorator) {
+        pd.jsUrl = config.jenkins.theme.js
         pd.cssUrl = config.jenkins.theme.css
         pd.save()
         logger.info("Setting theme settings " + config.jenkins.theme)

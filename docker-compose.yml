@@ -1,0 +1,34 @@
+version: "3.1"
+
+services:
+  jenkins:
+    image: alapshin/jenkins-master
+    restart: always
+    hostname: jenkins
+    container_name: jenkins
+    ports:
+      - "8080:8080"
+    secrets:
+      - source: jenkins_credentials
+        target: credentials.yml
+      - source: jenkins_admin_credentials
+        target: admin_credentials.properties
+    volumes:
+      - "jenkins_home:/var/jenkins_home"
+      - "/var/run/docker.sock:/var/run/docker.sock"
+      - "${WORKDIR-.}/jenkins.yml:/var/jenkins_home/config.yml"
+    environment:
+      DOCKER_GROUP: docker
+      DOCKER_SOCKET: /var/run/docker.sock
+      JENKINS_HOST:
+      JENKINS_USER: jenkins
+
+volumes:
+  jenkins_home:
+
+secrets:
+  jenkins_credentials:
+    file: "${WORKDIR-.}/secrets/credentials.yml"
+  jenkins_admin_credentials:
+    file: "${WORKDIR-.}/secrets/admin_credentials.properties"
+

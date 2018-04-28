@@ -9,6 +9,9 @@ ENV JAVA_OPTS "-Djava.awt.headless=true -Djenkins.install.runSetupWizard=false"
 
 # Copy configuration scripts
 COPY init.groovy.d/ /usr/share/jenkins/ref/init.groovy.d/
+# https://github.com/jenkinsci/docker/issues/618
+# Make a .override file for each file so it copied over upon Jenkins startup.
+RUN find /usr/share/jenkins/ref/init.groovy.d -type f -exec ln -s '{}' '{}'.override \;
 
 # Pre-install plugins
 COPY plugins.txt /usr/share/jenkins/ref/plugins.txt

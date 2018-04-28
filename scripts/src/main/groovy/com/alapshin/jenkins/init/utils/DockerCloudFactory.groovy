@@ -100,7 +100,7 @@ class DockerCloudFactory {
                 dockerTemplateBase,
                 connector,
                 obj['labels'],
-                obj['remote_fs', '/home/jenkins'],
+                obj.get('remote_fs', '/home/jenkins'),
                 obj.get('instance_cap', '1')
         ).with {
             mode = Node.Mode."${obj.get('usage', 'EXCLUSIVE')}"

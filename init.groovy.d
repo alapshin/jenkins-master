@@ -1,1 +1,0 @@
-scripts/src/main/groovy/com/alapshin/jenkins/init/

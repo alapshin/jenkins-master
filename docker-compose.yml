@@ -9,26 +9,52 @@ services:
     ports:
       - "8080:8080"
     secrets:
-      - source: jenkins_credentials
-        target: credentials.yml
-      - source: jenkins_admin_credentials
-        target: admin_credentials.properties
+      - source: admin_password
+        target: ADMIN_PASSWORD
+
+      - source: slack_token
+        target: SLACK_TOKEN
+
+      - source: github_token
+        target: GITHUB_TOKEN
+
+      - source: github_username
+        target: GITHUB_USERNAME
+
+      - source: github_password
+        target: GITHUB_PASSWORD
+
+      - source: sonarqube_token
+        target: SONARQUBE_TOKEN
+
     volumes:
       - "jenkins_home:/var/jenkins_home"
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "${WORKDIR-.}/jenkins.yml:/var/jenkins_home/config.yml"
+      - "${WORKDIR-.}/jenkins.yaml:/var/jenkins_home/jenkins.yaml"
     environment:
       DOCKER_GROUP: docker
       DOCKER_SOCKET: /var/run/docker.sock
       JENKINS_HOST:
       JENKINS_USER: jenkins
+      JENKINS_URL: "https://example.com"
+      SONARQUBE_URL: "https://example.com"
+      CASC_JENKINS_CONFIG: /var/jenkins_home/jenkins.yaml
 
 volumes:
   jenkins_home:
 
 secrets:
-  jenkins_credentials:
-    file: "${WORKDIR-.}/secrets/credentials.yml"
-  jenkins_admin_credentials:
-    file: "${WORKDIR-.}/secrets/admin_credentials.properties"
+  admin_password:
+    file: "${WORKDIR-.}/secrets/admin_password"
+  slack_token:
+    file: "${WORKDIR-.}/secrets/slack_token"
+  github_token:
+    file: "${WORKDIR-.}/secrets/github_token"
+  github_username:
+    file: "${WORKDIR-.}/secrets/github_username"
+  github_password:
+    file: "${WORKDIR-.}/secrets/github_password"
+  sonarqube_token:
+    file: "${WORKDIR-.}/secrets/sonarqube_token"
 

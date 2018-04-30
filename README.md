@@ -3,14 +3,15 @@
 Docker image with preconfigured Jenkins master node
 
 ## What it provides on top of base Jenkins image
-1. Number of preinstalled plugins (see `plugins.txt` for full list)
+1. Number of preinstalled plugins (see `plugins.txt` for full list) including
+experimental [Configuration as Code][1] plugin
 2. Custom entrypoint script that automatically creates docker group inside
 container to allow access to host docker's socket
-3. Preinstalled [Configuration as Code][2] plugin and config for it.
 
-## Automated configuration from config file using Configuration as Code plugin
-There is work in progress to allow Jenkins configuration using YAML config
-file. See [Configuration as Code][2] plugin for details.
+## Automated configuration using Configuration as Code plugin
+There is work in progress on [Configuration as Code][1] plugin that allows
+Jenkins to be configured using YAML config file instead of manual configuration
+using web interface.
 
 This image uses this plugin to automate Jenkins configuration and provides
 comprehensive initial config in `jenkins.yaml` that could be used as is or as

@@ -1,0 +1,4 @@
+#!/bin/bash
+
+IMAGE=jenkins-master
+USERNAME=alapshin

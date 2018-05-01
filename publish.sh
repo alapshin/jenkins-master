@@ -1,9 +1,15 @@
 #!/bin/bash
-set -euo pipefail
 
-IMAGE=jenkins-master
-USERNAME=alapshin
-VERSION=$(git describe --tags $(git rev-list --tags --max-count=1))
+source config
+
+VERSION=$(git describe --tags --exact-match 2>/dev/null)
+
+if [[ $? != 0 ]] ; then
+    echo "Can't publish image from untagged commit"
+    exit 1
+elif [[ "${VERSION}" == *dirty ]] ; then
+    echo "Can't publish image with uncommited changes"
+fi
 
 ./build.sh
 

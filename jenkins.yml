@@ -7,7 +7,7 @@ jenkins:
   crumbIssuer: standard
   # Enable agent -> master access control
   remotingSecurity:
-    enabled: false
+    enabled: true
 
   # Configure Docker cloud
   clouds:

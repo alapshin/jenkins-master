@@ -31,6 +31,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "${WORKDIR-.}/jenkins.yml:/var/jenkins_home/jenkins.yml"
     environment:
+      JAVA_OPTS: > 
+        -Dhudson.model.DirectoryBrowserSupport.CSP="sandbox allow-same-origin; 
+        default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';"
       DOCKER_GROUP: docker
       DOCKER_SOCKET: /var/run/docker.sock
       JENKINS_HOST:

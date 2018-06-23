@@ -32,6 +32,7 @@ services:
       - "${WORKDIR-.}/jenkins.yml:/var/jenkins_home/jenkins.yml"
     environment:
       JAVA_OPTS: > 
+        -Ds3-artifact-manager.enabled="true"
         -Dhudson.model.DirectoryBrowserSupport.CSP="sandbox allow-same-origin; 
         default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';"
       DOCKER_GROUP: docker

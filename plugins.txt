@@ -23,6 +23,9 @@ slack
 warnings
 workflow-aggregator
 
+# Experimental plugin to allow storing artifacts directly in S3 buckets
+artifact-manager-s3:1.0-beta-2
+
 # Exprimental plugin to allow jenkins configuration from YAML config
 # For more info see https://github.com/jenkinsci/configuration-as-code-plugin 
 configuration-as-code:0.8-alpha

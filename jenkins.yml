@@ -113,14 +113,18 @@ unclassified:
         manageHooks: true
         credentialsId: github_access_token
 
+  # Configure S3 bucket for artifact storage
+  s3blobstoreconfig:
+    container: example-bucket
+
+  # Configure simple theme plugin
+  simplethemedecorator:
+    cssUrl: https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
+
   # Configure SonarQube plugin
   sonarglobalconfiguration:
     installations:
       - name: SonarQube
         serverUrl: ${SONARQUBE_URL}
         serverAuthenticationToken: ${SONARQUBE_TOKEN}
-
-  # Configure simple theme plugin
-  simplethemedecorator:
-    cssUrl: https://tobix.github.io/jenkins-neo2-theme/dist/neo-light.css
 

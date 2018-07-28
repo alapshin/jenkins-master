@@ -1,6 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-source config
+source build.cfg
 
 docker build --tag "${USERNAME}"/"${IMAGE}":latest .

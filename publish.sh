@@ -1,6 +1,6 @@
 #!/bin/bash
 
-source config
+source build.cfg
 
 VERSION=$(git describe --tags --exact-match 2>/dev/null)
 

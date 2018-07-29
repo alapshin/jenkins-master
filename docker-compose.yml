@@ -31,6 +31,9 @@ services:
       - "/var/run/docker.sock:/var/run/docker.sock"
       - "${WORKDIR-.}/jenkins.yml:/var/jenkins_home/jenkins.yml"
     environment:
+      # Configure content security policy to fix local reports published
+      # with HTML Publisher plugin.
+      # See https://wiki.jenkins.io/display/JENKINS/Configuring+Content+Security+Policy
       JAVA_OPTS: > 
         -Dhudson.model.DirectoryBrowserSupport.CSP="sandbox allow-same-origin; 
         default-src 'none'; script-src 'self'; connect-src 'self'; img-src 'self'; style-src 'self';"

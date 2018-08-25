@@ -44,10 +44,8 @@ jenkins:
 
   # Configure role-based authorization strategy
   authorizationStrategy:
-    roleStrategy:
+    roleBased:
       roles:
-        items: []
-        agents: []
         global:
           - name: "admin"
             description: "Jenkins administrators"

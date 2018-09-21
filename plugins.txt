@@ -25,5 +25,5 @@ workflow-aggregator
 
 # Exprimental plugin to allow jenkins configuration from YAML config
 # For more info see https://github.com/jenkinsci/configuration-as-code-plugin 
-configuration-as-code:1.0-rc2
-configuration-as-code-support:1.0-rc2
+configuration-as-code:1.0
+configuration-as-code-support:1.0

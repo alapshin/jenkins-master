@@ -2,6 +2,8 @@ android-lint
 blueocean
 checkstyle
 credentials-binding
+configuration-as-code:1.2
+configuration-as-code-support:1.2
 docker-plugin
 email-ext
 findbugs
@@ -22,8 +24,3 @@ sonar
 slack
 warnings
 workflow-aggregator
-
-# Exprimental plugin to allow jenkins configuration from YAML config
-# For more info see https://github.com/jenkinsci/configuration-as-code-plugin 
-configuration-as-code:1.0
-configuration-as-code-support:1.0

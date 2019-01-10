@@ -1,12 +1,9 @@
-android-lint
 blueocean
-checkstyle
 credentials-binding
-configuration-as-code:1.3
-configuration-as-code-support:1.3
+configuration-as-code
+configuration-as-code-support
 docker-plugin
 email-ext
-findbugs
 git
 github
 github-branch-source
@@ -22,5 +19,5 @@ role-strategy
 simple-theme-plugin
 sonar
 slack
-warnings
+warnings-ng
 workflow-aggregator

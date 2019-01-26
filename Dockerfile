@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.150.1
+FROM jenkins/jenkins:2.150.2
 
 USER root
 RUN apt-get update \

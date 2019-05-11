@@ -8,6 +8,7 @@ git
 github
 github-branch-source
 htmlpublisher
+jaxb
 junit
 matrix-auth
 parameterized-scheduler

@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.164.2
+FROM jenkins/jenkins:2.164.3-jdk11
 
 USER root
 RUN apt-get update \

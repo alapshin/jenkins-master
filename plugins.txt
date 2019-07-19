@@ -2,7 +2,6 @@ blueocean
 credentials-binding
 configuration-as-code
 configuration-as-code-support
-docker-plugin
 email-ext
 git
 github

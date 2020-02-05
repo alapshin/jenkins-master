@@ -1,10 +1,11 @@
-FROM jenkins/jenkins:2.204.1-jdk11
+FROM jenkins/jenkins:2.204.2-jdk11
 
 USER root
 RUN apt-get update \
     && apt-get --no-install-recommends --yes install gosu
 
 # Disable setup wizard
+# See https://github.com/jenkinsci/docker#script-usage
 RUN echo $JENKINS_VERSION > /usr/share/jenkins/ref/jenkins.install.UpgradeWizard.state
 RUN echo $JENKINS_VERSION > /usr/share/jenkins/ref/jenkins.install.InstallUtil.lastExecVersion
 

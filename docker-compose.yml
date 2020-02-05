@@ -46,7 +46,9 @@ services:
       SONARQUBE_URL: "https://example.com"
       CASC_JENKINS_CONFIG: /var/jenkins_home/jenkins.yml
       # Upgrade installed plugins if image contains newer version
+      # See https://github.com/jenkinsci/docker#upgrading-plugins
       PLUGINS_FORCE_UPGRADE: 'true'
+      TRY_UPGRADE_IF_NO_MARKER: 'true'
 
 volumes:
   jenkins_home:

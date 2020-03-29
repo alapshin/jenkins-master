@@ -15,6 +15,7 @@ parameterized-scheduler
 pipeline-aws
 pipeline-github-lib
 pipeline-stage-view
+pipeline-utility-steps
 rich-text-publisher-plugin
 role-strategy
 simple-theme-plugin

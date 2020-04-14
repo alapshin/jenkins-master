@@ -11,9 +11,6 @@ services:
       - source: admin_password
         target: ADMIN_PASSWORD
 
-      - source: slack_token
-        target: SLACK_TOKEN
-
       - source: github_token
         target: GITHUB_TOKEN
 
@@ -56,8 +53,6 @@ volumes:
 secrets:
   admin_password:
     file: "${WORKDIR-.}/secrets/admin_password"
-  slack_token:
-    file: "${WORKDIR-.}/secrets/slack_token"
   github_token:
     file: "${WORKDIR-.}/secrets/github_token"
   github_username:
@@ -66,4 +61,3 @@ secrets:
     file: "${WORKDIR-.}/secrets/github_password"
   sonarqube_token:
     file: "${WORKDIR-.}/secrets/sonarqube_token"
-

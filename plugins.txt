@@ -20,6 +20,6 @@ rich-text-publisher-plugin
 role-strategy
 simple-theme-plugin
 sonar
-slack
 warnings-ng
 workflow-aggregator
+zulip

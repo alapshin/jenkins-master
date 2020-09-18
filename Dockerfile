@@ -1,4 +1,4 @@
-FROM jenkins/jenkins:2.235.1-jdk11
+FROM jenkins/jenkins:2.249.1-jdk11
 
 USER root
 RUN apt-get update \

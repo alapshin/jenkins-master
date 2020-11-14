@@ -11,7 +11,7 @@ RUN echo $JENKINS_VERSION > /usr/share/jenkins/ref/jenkins.install.InstallUtil.l
 
 # Pre-install plugins
 COPY --chown=jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
-RUN /usr/local/bin/install-plugins.sh < /usr/share/jenkins/ref/plugins.txt
+RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
 COPY entrypoint.sh /
 ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]

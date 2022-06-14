@@ -2,7 +2,7 @@ FROM jenkins/jenkins:2.332.3-jdk11
 
 USER root
 RUN apt-get update \
-    && apt-get --no-install-recommends --yes install gosu
+    && apt-get --no-install-recommends --yes install docker.io gosu
 
 # Disable setup wizard
 # See https://github.com/jenkinsci/docker#script-usage

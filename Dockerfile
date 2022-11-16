@@ -14,4 +14,4 @@ COPY --chown=jenkins plugins.txt /usr/share/jenkins/ref/plugins.txt
 RUN jenkins-plugin-cli --plugin-file /usr/share/jenkins/ref/plugins.txt
 
 COPY entrypoint.sh /
-ENTRYPOINT ["/sbin/tini", "--", "/entrypoint.sh"]
+ENTRYPOINT ["/usr/bin/tini", "--", "/entrypoint.sh"]
